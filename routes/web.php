@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommitController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -20,9 +21,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [CommitController::class, 'getNumbersCommits'])->middleware(['auth'])->name('dashboard');
 
 Route::get('/auth/redirect', function() {
     return Socialite::driver('github')->redirect();
