@@ -21,12 +21,16 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [CommitController::class, 'getNumbersCommits'])->middleware(['auth'])->name('dashboard');
+Route::get('/dashboard', [CommitController::class, 'renderDashboard'])->middleware(['auth'])->name('dashboard');
 
 Route::get('/auth/redirect', function() {
     return Socialite::driver('github')->redirect();
 });
 
 Route::get('/auth/callback', [UserController::class, 'loginUser']);
+
+
+Route::get('/graphs/{repo}', [CommitController::class, 'getDataCommits'])->middleware(['auth'])->name('graphs');
+
 
 require __DIR__.'/auth.php';

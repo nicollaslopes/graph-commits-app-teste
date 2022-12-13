@@ -7,38 +7,34 @@ use Illuminate\Support\Facades\Http;
 
 class CommitController extends Controller
 {
-    public function getNumbersCommits() {
+    public function getDataCommits() {
 
-        $repos = CommitController::getRepos();
+        $repo = explode('/', $_SERVER['PATH_INFO']);
+
+        $repoName = $repo[2];
 
         $arr = [];
 
-        foreach($repos as $key => $repo) {
-            
-            $response = Http::get("https://api.github.com/repos/nicollaslopes/$repo/commits");
-            $commitsArray = json_decode($response->getBody());
-            $quantityCommits = count($commitsArray);
+        $response = Http::get("https://api.github.com/repos/nicollaslopes/$repoName/commits");
+        $commitsArray = json_decode($response->getBody());
 
-            $arr[$key]['name'] = $repo;
-            $arr[$key]['qt'] = $quantityCommits;
-            
-            $dateToday = new \Datetime();
+        $arr['name'] = $repoName;
 
-            foreach ($commitsArray as $keyDate => $commit) {
-                $dateCommit = date('d-m-Y', strtotime($commit->commit->committer->date));
-                $dateCommitFormat = new \Datetime($dateCommit);
+        $dateToday = new \Datetime();
 
-                $interval = $dateToday->diff($dateCommitFormat);
+        foreach ($commitsArray as $keyDate => $commit) {
+            $dateCommit = date('d-m-Y', strtotime($commit->commit->committer->date));
+            $dateCommitFormat = new \Datetime($dateCommit);
 
-                if ($interval->days < 90) {
-                    $arr[$key][$keyDate]['date'] = $dateCommit;
-                }
+            $interval = $dateToday->diff($dateCommitFormat);
+
+            if ($interval->days < 90) {
+                $arr['date'][$keyDate] = $dateCommit;
             }
-
         }
 
-        return view('dashboard', [
-            'arr' => $arr 
+        return view('graphs', [
+            'arr' => $arr
         ]);
     }
 
@@ -58,4 +54,13 @@ class CommitController extends Controller
 
         return $arrayRepos;
     }
+
+    public static function renderDashboard() {
+        $repos = CommitController::getRepos();
+
+        return view('dashboard', [
+            'repos' => $repos
+        ]);
+    }
+    
 }
