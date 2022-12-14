@@ -17,6 +17,7 @@ class UserController extends Controller
             'github_id' => $githubUser->id,
         ], [
             'name' => $githubUser->name,
+            'nickname' => $githubUser->nickname,
             'email' => $githubUser->email,
             'github_token' => $githubUser->token,
             'github_refresh_token' => $githubUser->refreshToken,

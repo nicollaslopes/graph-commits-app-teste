@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class CommitController extends Controller
@@ -14,8 +16,9 @@ class CommitController extends Controller
         $repoName = $repo[2];
 
         $arr = [];
-
-        $response = Http::get("https://api.github.com/repos/nicollaslopes/$repoName/commits");
+        
+        $nickName = Auth::User()->getAttributes()['nickname'];
+        $response = Http::get("https://api.github.com/repos/$nickName/$repoName/commits");
         $commitsArray = json_decode($response->getBody());
 
         $arr['name'] = $repoName;
@@ -40,7 +43,9 @@ class CommitController extends Controller
 
     public static function getRepos() {
 
-        $repos = Http::get('https://api.github.com/users/nicollaslopes/repos');
+        $nickName = Auth::User()->getAttributes()['nickname'];
+
+        $repos = Http::get("https://api.github.com/users/$nickName/repos");
 
         $reposJson = json_decode($repos->getBody());
 
