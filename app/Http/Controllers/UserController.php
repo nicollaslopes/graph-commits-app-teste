@@ -22,6 +22,8 @@ class UserController extends Controller
             'github_refresh_token' => $githubUser->refreshToken,
     
         ]);
+
+        dd($user);
     
         Auth::login($user);
     
