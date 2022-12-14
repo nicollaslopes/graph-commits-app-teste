@@ -9,6 +9,10 @@ Ao clicar em algum repositório, irá ser exibido um gráfico no qual o eixo X c
 ## Para localmente testar em uma máquina
 
 - Clone e acesse o diretório do projeto, instale as dependências com o comando `composer install`.
+- Crie um arquivo `.env` e copie os arquivos do `.env.example`
+- Execute o comando `php artisan key:generate`
+- Crie o arquivo do banco de dados com o comando `touch database/database.sqlite`
+- Execute o comando `php artisan migrate`
 - Para iniciar o projeto, execute no seu terminal o comando `php artisan serve`.
 
 ## URL de Acesso
