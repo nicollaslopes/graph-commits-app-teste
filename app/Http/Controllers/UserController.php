@@ -23,8 +23,6 @@ class UserController extends Controller
     
         ]);
 
-        dd($user);
-    
         Auth::login($user);
     
         return redirect('/dashboard');
